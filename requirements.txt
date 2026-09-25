@@ -1,0 +1,7 @@
+numpy==1.26.4
+matplotlib==3.8.4
+torch==2.2.2
+# scipy listed previously but not used — removed; versions pinned for reproducibility
+# Python 3.11, use: python3 -m pip install -r requirements.txt
+# Determinism: torch.use_deterministic_algorithms(True) in real_twin_experiment.py; PYTHONHASHSEED=0
+# Synthetic: single seed 12345 (fixed RNG); Real: 5 seeds 12345-12349 pooled (Wilson n=2000)

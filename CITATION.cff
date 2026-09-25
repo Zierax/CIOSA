@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "Scaling cannot certify semantic understanding in artificial systems: an exact bound on the certification of meaning from finite behavior"
+authors:
+  - family-names: Salah
+    given-names: Ziad
+    orcid: https://orcid.org/0009-0002-6813-2416
+    email: zs.0111785692@gmail.com
+type: article
+year: 2026
+license: MIT
+repository-code: "https://github.com/Zierax/CIOSA"
+keywords:
+  - semantic alignment
+  - certification game
+  - Rice theorem
+  - scaling laws

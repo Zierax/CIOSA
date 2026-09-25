@@ -1,0 +1,9 @@
+# Regular GitHub repo
+.venv/
+__pycache__/
+*.log
+*.aux
+*.out
+*.toc
+.DS_Store
+legacy/
