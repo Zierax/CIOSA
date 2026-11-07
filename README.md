@@ -1,7 +1,7 @@
 # CIOSA: Computational Impossibility of Semantic Alignment
 
-**Scaling cannot certify semantic understanding in artificial systems: an
-exact bound on the certification of meaning from finite behavior.**
+**The certification game: scaling buys identification, never certification
+on twin-rich classes.**
 
 This repository contains the full reproducible research package for the
 manuscript: measurement scripts, data, charts, and the manuscript sources.
