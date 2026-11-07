@@ -32,6 +32,7 @@ repo/
 ├── scripts/
 │   ├── twin_models.py           # synthetic measurements (deterministic)
 │   ├── real_twin_experiment.py  # real-transformer verification (5 seeds, pooled)
+│   ├── twin_exact_validation.py # numerical check of the exact law (1/2)(1-pi)^N
 │   └── make_charts.py           # figure generators (PDF + PNG; six figures)
 ├── data/
 │   ├── game_value.csv           # certification value vs evidence size N
@@ -41,7 +42,8 @@ repo/
 │   ├── separable_rate.csv       # exponential identification on separable class
 │   ├── real_twin_agreement.csv  # trained twin: agreement on/off the record
 │   ├── real_certification.csv   # certification value on trained transformers
-│   └── real_identification.csv  # identification with T free probes (real models)
+│   ├── real_identification.csv  # identification with T free probes (real models)
+│   └── twin_exact_validation.csv # Monte-Carlo check of Theorem 8's exact rate
 ├── charts/
 │   ├── fig1_game_value.{pdf,png}
 │   ├── fig2_budget.{pdf,png}
@@ -61,6 +63,7 @@ real-transformer verification).
 ```bash
 python3 scripts/twin_models.py            # writes data/*.csv (five synthetic files)
 python3 scripts/real_twin_experiment.py   # trains 2 small transformers; writes real_*.csv
+python3 scripts/twin_exact_validation.py  # writes data/twin_exact_validation.csv
 python3 scripts/make_charts.py            # writes charts/fig1..fig6 (.pdf and .png)
 ```
 
@@ -102,11 +105,11 @@ If you use this repository, please cite:
 
 ```bibtex
 @misc{salah2026scaling,
-  title        = {Scaling cannot certify semantic understanding in artificial systems: an exact bound on the certification of meaning from finite behavior},
+  title        = {The certification game: scaling buys identification, never certification on twin-rich classes},
   author       = {Salah, Ziad},
   year         = {2026},
   howpublished = {\url{https://github.com/Zierax/CIOSA}},
-  note         = {ORCID: \url{https://orcid.org/0009-0002-6813-2416}}
+  note         = {ORCID: \url{https://orcid.org/0009-0002-6813-2416}, \url{https://github.com/Zierax/CIOSA}}
 }
 ```
 

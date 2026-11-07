@@ -122,10 +122,20 @@ E] = 1/2 * 0.3^T. Pooled over five seeds (2000 trials per T); the decay
 spans just over an order of magnitude beyond the worst-case Wilson
 half-width (+-0.022 at p=1/2). (Figure 6, with error bars.)
 
+## Exact-law numerical check (Theorem 8)
+
+`scripts/twin_exact_validation.py` simulates the twin game directly and
+compares the measured Bayes error with the closed form (1/2)(1-pi)^N at
+five (|D|, pi, N) settings (80,000 trials each, fixed seed). It writes
+`data/twin_exact_validation.csv`; the values are reproduced in
+Appendix E.3b. At pi = 0.1 and delta = 0.1 the empirical sample complexity
+is N = 16 against the closed form ln(1/(2 delta))/ln(1/(1-pi)) = 15.28.
+
 ## Reproduce
 
 ```
 python3 scripts/twin_models.py            # writes data/*.csv (synthetic)
 python3 scripts/real_twin_experiment.py   # trains 2 transformers, writes real_*.csv
+python3 scripts/twin_exact_validation.py  # writes data/twin_exact_validation.csv
 python3 scripts/make_charts.py            # writes charts/*.pdf + charts/*.png
 ```
