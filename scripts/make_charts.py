@@ -28,11 +28,15 @@ def load(path):
 
 
 def save(fig, name):
-    fig.tight_layout()
-    fig.savefig(CHARTS / f"{name}.pdf")
-    fig.savefig(CHARTS / f"{name}.png", dpi=300)
+    fig.savefig(CHARTS / f"{name}.pdf", bbox_inches="tight")
+    fig.savefig(CHARTS / f"{name}.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
     print(f"wrote {name}.pdf/.png")
+
+
+def legend_below(ax, ncol=1):
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22),
+              ncol=ncol, fontsize=8, frameon=False)
 
 
 def style(ax):
@@ -48,12 +52,15 @@ fig, ax = plt.subplots(figsize=(7.2, 4.0))
 ax.set_xscale("log")
 ax.set_xlabel("evidence size $N$")
 ax.set_ylabel("error")
-ax.plot(gv["n"], gv["measured_error"], "b-*", label="certification value $v(\\mathcal{E})$ (measured, exact $=1/2$)")
-ax.plot(ide["n"], ide["measured_id_error"], "r-s", label="identification error under Occam prior (decays)")
-ax.axhline(0.5, color="0.5", ls="--", lw=0.8)
+ax.plot(gv["n"], gv["measured_error"], "b-*", ms=9, zorder=3,
+        label="certification value $v(\\mathcal{E})$ (measured, exact $=1/2$)")
+ax.plot(ide["n"], ide["measured_id_error"], "r-s", ms=6, zorder=4,
+        label="identification error under Occam prior (decays)")
+ax.axhline(0.5, color="0.5", ls="--", lw=0.8, zorder=1)
 ax.set_ylim(0, 0.6)
+ax.margins(x=0.06)
 ax.grid(True, which="major", alpha=0.35)
-ax.legend(loc="upper right", fontsize=8)
+legend_below(ax)
 save(fig, "fig1_game_value")
 
 # ---- Figure 2: the budget function (static linear, relocating flat) ----
@@ -61,11 +68,14 @@ b = load("budget_value.csv")
 fig, ax = plt.subplots(figsize=(7.2, 4.0))
 ax.set_xlabel("active query budget $T$")
 ax.set_ylabel("value $v(T)$")
-ax.plot(b["t"], b["static_value"], "b-*", label="static twin: $v(T)=\\frac{1}{2}(1-T/M)$ (measured)")
-ax.plot(b["t"], b["relocating_value"], "r-s", label="relocating twin: $v(T)=\\frac{1}{2}$ for $T<M$ (measured)")
+ax.plot(b["t"], b["static_value"], "b-*", ms=9, zorder=3,
+        label="static twin: $v(T)=\\frac{1}{2}(1-T/M)$ (measured)")
+ax.plot(b["t"], b["relocating_value"], "r-s", ms=6, mew=1.2, zorder=4,
+        label="relocating twin: $v(T)=\\frac{1}{2}$ for $T<M$ (measured)")
 ax.set_ylim(0, 0.6)
+ax.margins(x=0.04)
 ax.grid(True, which="major", alpha=0.35)
-ax.legend(loc="upper right", fontsize=8)
+legend_below(ax)
 save(fig, "fig2_budget")
 
 # ---- Figure 3: the contrast of rates (separable decay vs 1/2 floor) ----
@@ -101,12 +111,13 @@ fig, ax = plt.subplots(figsize=(7.2, 4.0))
 ax.set_xscale("log")
 ax.set_xlabel("record size $N$")
 ax.set_ylabel("measured certification value")
-ax.plot(rc["n"], rc["measured_value"], "b-*", ms=8, alpha=0.9,
+ax.axhline(0.5, color="0.5", ls="--", lw=1.0, zorder=1, label="theory $1/2$")
+ax.plot(rc["n"], rc["measured_value"], "b-o", ms=9, mew=1.2, zorder=4,
         label="real twin (two trained transformers, chain-MLE record)")
-ax.axhline(0.5, color="0.5", ls="--", lw=0.8, label="theory $1/2$")
 ax.set_ylim(0, 0.6)
+ax.margins(x=0.10)
 ax.grid(True, which="major", alpha=0.35)
-ax.legend(loc="upper right", fontsize=8)
+legend_below(ax, ncol=2)
 save(fig, "fig5_real_certification")
 
 # ---- Figure 6: real-system identification error (free probes) ----

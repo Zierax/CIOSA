@@ -33,7 +33,8 @@ repo/
 │   ├── twin_models.py           # synthetic measurements (deterministic)
 │   ├── real_twin_experiment.py  # real-transformer verification (5 seeds, pooled)
 │   ├── twin_exact_validation.py # numerical check of the exact law (1/2)(1-pi)^N
-│   └── make_charts.py           # figure generators (PDF + PNG; six figures)
+│   ├── twin_richness_experiment.py # Experiment A/B: twin-richness vs N and model size
+│   └── make_charts.py           # figure generators (PDF + PNG; Figs. 1-6)
 ├── data/
 │   ├── game_value.csv           # certification value vs evidence size N
 │   ├── id_error.csv             # identification error under Occam prior
@@ -43,14 +44,18 @@ repo/
 │   ├── real_twin_agreement.csv  # trained twin: agreement on/off the record
 │   ├── real_certification.csv   # certification value on trained transformers
 │   ├── real_identification.csv  # identification with T free probes (real models)
-│   └── twin_exact_validation.csv # Monte-Carlo check of Theorem 8's exact rate
+│   ├── twin_exact_validation.csv # Monte-Carlo check of Theorem 8's exact rate
+│   ├── twin_richness.csv        # Experiment A/B: per-split off-record separation
+│   ├── twin_richness_summary.csv # Experiment A/B: separation vs N and model size
+│   └── twin_richness_models.npz # Experiment A/B: per-model off-record predictions
 ├── charts/
 │   ├── fig1_game_value.{pdf,png}
 │   ├── fig2_budget.{pdf,png}
 │   ├── fig3_rate.{pdf,png}
 │   ├── fig4_logodds.{pdf,png}
 │   ├── fig5_real_certification.{pdf,png}
-│   └── fig6_real_identification.{pdf,png}
+│   ├── fig6_real_identification.{pdf,png}
+│   └── fig7_twin_richness.{pdf,png}
 └── results/
     └── results_summary.md    # measured numbers and how to read them
 ```
@@ -64,6 +69,7 @@ real-transformer verification).
 python3 scripts/twin_models.py            # writes data/*.csv (five synthetic files)
 python3 scripts/real_twin_experiment.py   # trains 2 small transformers; writes real_*.csv
 python3 scripts/twin_exact_validation.py  # writes data/twin_exact_validation.csv
+python3 scripts/twin_richness_experiment.py # 180 models; writes twin_richness*.csv and fig7
 python3 scripts/make_charts.py            # writes charts/fig1..fig6 (.pdf and .png)
 ```
 
@@ -83,12 +89,20 @@ exactly what `make_charts.py` produces from them.
 | `real_twin_agreement.csv` | Trained twin: agreement on/off record (E vs off-E) | A real Goodman twin is trainable: agree=1 on E, 0 off |
 | `real_certification.csv` | Certification value on two trained transformers | Value flat at exactly 1/2 for N = 4..30 |
 | `real_identification.csv` | Identification with T free probes (real models) | Error decays with T, floor once probes leave E |
+| `twin_richness_summary.csv` | Off-record separation of record-consistent models vs N and size | Twin-richness persists (0.33-0.72); scaling reduces but does not eliminate it |
 
 The real-transformer experiment (`real_twin_experiment.py`) trains a small
 transformer (~0.5M params) on digit arithmetic $a+b \bmod 10$ (aligned),
 and a twin trained on the record $a<3$ under $\sigma$ and the shifted rule
 $a+b+3 \bmod 10$ off it; it then measures the game value and the
 identification curve on the trained models (Figures 5--6).
+
+Experiment A/B (`twin_richness_experiment.py`) trains 180 models of three
+sizes on random records of size N in {16,64,128,192} over (a+b) mod 10 on
+0..15, retains only models that fit the record to >=99%, and measures the
+mean pairwise disagreement on the off-record inputs. Twin-richness is
+present at every scale; a 3.3x larger model disagrees less but still
+disagrees on 39-67% of held-out inputs (Figure 7, Appendix I).
 
 ## Manuscript
 
