@@ -131,11 +131,36 @@ five (|D|, pi, N) settings (80,000 trials each, fixed seed). It writes
 Appendix E.3b. At pi = 0.1 and delta = 0.1 the empirical sample complexity
 is N = 16 against the closed form ln(1/(2 delta))/ln(1/(1-pi)) = 15.28.
 
+
+## Twin-richness of a trained model class (Experiment A/B)
+
+`scripts/twin_richness_experiment.py` trains 180 TinyGPTs (3 model sizes
+x 4 record sizes x 3 record splits x 5 seeds) on random records of
+(a+b) mod 10 over a,b in 0..15. Only models with record accuracy >= 99%
+are retained, so each retained model is consistent with the record.
+Off-record separation is the mean over model pairs of the fraction of
+off-record inputs on which they disagree.
+
+| N | medium (69,650) | large (228,402) |
+|---|---|---|
+| 16 | 0.397 | 0.328 |
+| 64 | 0.589 | 0.509 |
+| 128 | 0.720 | 0.670 |
+| 192 | 0.472 | 0.388 |
+
+The 3.3x larger model disagrees less at every N (a 14-17% relative
+reduction) but never below 0.33; at N=192 it is 69% accurate off the
+record and still disagrees on 39% of held-out inputs. The small model
+fits the record in only 4-9 of 15 runs at large N and is reported
+separately. Data: `data/twin_richness_summary.csv`; Figure 7;
+Appendix I.
+
 ## Reproduce
 
 ```
 python3 scripts/twin_models.py            # writes data/*.csv (synthetic)
 python3 scripts/real_twin_experiment.py   # trains 2 transformers, writes real_*.csv
 python3 scripts/twin_exact_validation.py  # writes data/twin_exact_validation.csv
+python3 scripts/twin_richness_experiment.py # writes twin_richness*.csv + fig7
 python3 scripts/make_charts.py            # writes charts/*.pdf + charts/*.png
 ```
